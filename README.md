@@ -2,6 +2,7 @@
 * 目前还存在一些bug，如敌人没血了还继续攻击、有时没法攻击敌人、进入下个地图判断区域太小导致没法切换地图等问题，欢迎提Pull Request。
 
 >  游戏截图
+<br>
 <img src="https://github.com/macosunity/NewSwordHTML/raw/master/screenshots/0.png" width="631px" height="475px"/>
 <img src="https://github.com/macosunity/NewSwordHTML/raw/master/screenshots/1.png" width="631px" height="475px"/>
 <img src="https://github.com/macosunity/NewSwordHTML/raw/master/screenshots/2.png" width="631px" height="475px"/>
