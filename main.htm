@@ -1,0 +1,604 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="imagetoolbar" content="no">
+<title>WEB ARPG--《新剑侠情缘》</title>
+<script>
+var gw=40,gh=20,gwh=45;
+var flag=0;
+var tab=0;
+var n_path="",HTML="";
+var GameRoles=new Array();
+var HttpRequest;
+var Event=0;
+var state="new";
+var LoadedData=new Array();
+var IsFirstIn,IsLoad;
+
+function getPos(obj){
+	obj.style.left=Math.floor((640-obj.offsetWidth)/2);
+	obj.style.top=Math.floor((480-obj.offsetHeight)/2);
+}
+
+function mouseMoveHandle() {
+	var event = window.event || arguments.callee.caller.arguments[0];
+	var eventX = event.clientX || event.x || event.pageX;
+	var eventY = event.clientY || event.y || event.pageY;
+	window.status="x:"+(eventX-document.getElementById("map").offsetLeft)+" y:"
+					  +(eventY-document.getElementById("map").offsetTop)+" "
+					  +Math.floor((eventX-document.getElementById("map").offsetLeft)/gw)+","
+					  +Math.floor((eventY-document.getElementById("map").offsetTop)/gh);
+}
+</script>
+<link href="code/style.css" rel="stylesheet" type="text/css">
+</head>
+<body onmousemove='mouseMoveHandle()' onload="init();" oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;">
+
+<div id="scene" onmousedown="MapDown();" style="display:none;left:0px;top:0px;width:640px;height:480px;background-color:#ffddaa;overflow:hidden;z-index:0;">
+<div id="map"></div>
+</div>
+
+<div id="title" style="display:none;background-color:black;width:640px;height:480px;background-image:url(images/begin.jpg);">
+<div style="width:194px;height:57px;left:208px;top:155px;overflow:hidden;">
+<img src="images/menu.gif" style="left:0px;top:0px;" onmouseover="this.style.left=-194+'px';audio.PlaySE(1);" onmouseout="this.style.left=0+'px';" onclick='GameScene.GotoScene(0);audio.StopBGM();'></div>
+<div style="width:194px;height:57px;left:208px;top:212px;overflow:hidden;">
+<img src="images/menu.gif" style="left:0px;top:-57px;" onmouseover="this.style.left=-194+'px';audio.PlaySE(1);" onmouseout="this.style.left=0+'px';" onclick="ToLoadFace();"></div>
+<div style="width:194px;height:57px;left:208px;top:269px;overflow:hidden;">
+<img src="images/menu.gif" style="left:0px;top:-114px;" onmouseover="this.style.left=-194+'px';audio.PlaySE(1);" onmouseout="this.style.left=0+'px';" onclick="ToDesign();"></div>
+<div style="width:194px;height:57px;left:208px;top:326px;overflow:hidden;">
+<img src="images/menu.gif" style="left:0px;top:-171px;" onmouseover="this.style.left=-194+'px';audio.PlaySE(1);" onmouseout="this.style.left=0+'px';" onclick="if(confirm('是否要退出游戏?')){self.opener=null;self.close();}"></div>
+</div>
+
+<div onmousedown="MouseDown();" id="TextOLE" style="display:none;width:640px;height:480px;z-index:1;">
+<div><img src=""></div>
+<div></div>
+</div>
+
+<div id="szOLE" style="display:none;width:408px;height:480px;"></div>
+<div id="goodsOLE" style="display:none;left:334px;width:306px;height:480px;"></div>
+
+<div id="txtBuff" style="display:none"></div>
+
+<div id="SystemMenu" style="display:none;width:640px;height:480px;background:no-repeat url(images/jindu.gif) 152px 0px;">
+<span style="width:193px;height:28px;left:224px;top:79px;background-color:#cccccc;overflow:hidden"><img src="images/systemmenu.jpg" style="left:0px;top:0px;" onmousedown="this.style.left=-193;" onmouseup="this.style.left=0" onmouseout="this.style.left=0" onclick="ToLoadFace();"></span>
+<span style="width:193px;height:28px;left:224px;top:164px;background-color:#cccccc;overflow:hidden"><img src="images/systemmenu.jpg" style="left:0px;top:-28px;" onmousedown="this.style.left=-193;" onmouseup="this.style.left=0" onmouseout="this.style.left=0"></span>
+<span style="width:193px;height:28px;left:224px;top:252px;background-color:#cccccc;overflow:hidden"><img src="images/systemmenu.jpg" style="left:0px;top:-56px;" onmousedown="this.style.left=-193;" onmouseup="this.style.left=0" onmouseout="this.style.left=0"></span>
+<span style="width:193px;height:28px;left:224px;top:345px;background-color:#cccccc;overflow:hidden"><img src="images/systemmenu.jpg" style="left:0px;top:-84px;" onmousedown="this.style.left=-193;" onmouseup="this.style.left=0" onmouseout="this.style.left=0" onclick='GameTime.Run();document.getElementById("SystemMenu").style.display="none";'></span>
+</div>
+
+<div id="systemInfo" style="display:none;"></div>
+
+<div id="SceneFadeDiv" style="width:640px;height:480px;display:none;background-color:black;filter:alpha(opacity=0);-moz-opacity:0; 
+opacity:0;"></div>
+
+<div id="bottom" style="display:none;width:640px;height:69px;left:0px;top:411px;background-image:url(images/bottom1.gif);">
+<img src="images/botton.jpg" style="left:12px;top:6px">
+<img src="images/bottom2.gif" style="top:-18px;">
+<img src="images/bottom3.gif" style="left:229px;top:-10px;">
+<img src="images/bottom4.gif" style="left:414px;top:-66px;">
+<span id="tiliIMG" style="left:418px;top:-31px;width:92px;height:79px;overflow:hidden;"><img src="images/tili.gif"></span>
+<span id="manaIMG" style="left:470px;top:-46px;width:84px;height:110px;overflow:hidden;"><img src="images/mana.gif"></span>
+<span id="lifeIMG" style="left:559px;top:-66px;width:48px;height:133px;overflow:hidden;"><img src="images/life.gif"></span>
+<span style="width:304px;height:54px;left:81px;top:15px;background-image:url(images/gongfu-wupin.jpg)"></span>
+<span style="width:21px;height:41px;left:12px;top:6px;overflow:hidden">
+<img src="images/button_ren.jpg" style="left:0px;top:0px" onclick="GameRoles[0].FocusZB();" onmousedown="this.style.pixelLeft=-21;" onmouseup="this.style.pixelLeft=0;">
+</span>
+<span style="width:18px;height:32px;left:33px;top:15px;overflow:hidden">
+<img src="images/button_system.jpg" style="left:0px;top:0px" onclick="ToSystemMenu();" onmousedown="this.style.pixelLeft=-18;" onmouseup="this.style.pixelLeft=0;">
+</span>
+<span style="width:24px;height:41px;left:51px;top:6px;overflow:hidden">
+<img src="images/button_wupin.jpg" style="left:0px;top:0px" onclick="GameRoles[0].FocusGoods();" onmousedown="this.style.pixelLeft=-24;" onmouseup="this.style.pixelLeft=0;">
+</span>
+<span style="width:63px;height:19px;left:12px;top:47px;overflow:hidden">
+<img src="images/button_xiaoxi.jpg" style="left:0px;top:0px" onclick="GameRoles[0].FocusMsg();" onmousedown="this.style.pixelLeft=-63;" onmouseup="this.style.pixelLeft=0;">
+</span>
+</div>
+
+<div id="design" style="background-image:url(images/design.jpg);display:none;width:640px;height:480px;overflow:hidden;" onkeydown="if(event.keyCode==27){ToTitle();}">
+<div id="designer" style="position:absolute;left:90px;top:60px;width:200px;height:300px;overflow:hidden;">
+<div id="Ftop"></div>
+<div id="Fbottom"></div>
+<div id="designMove" style="position:absolute;color:#BD8E00;left:0px;top:250px;width:200px;text-align:center;font-family:楷体_GB2312;font-size:16px"><font style="font-family:方正舒体;font-size:30px;color:#B9B9B9;">制作名单</font><p class="p">程序</p>胡加杰<p class="p">策划</p>胡加杰<p class="p">监制</p>胡加杰<br>陶海华<p class="p">美工</p>图片取自《新剑侠情缘》<br>由 胡加杰 修改<p class="p">版权</p>图片、音乐版权归金山<br>程序版权归 胡加杰<p class="p">鸣谢</p>幻宇<br><FONT face=Arial>BOBBY<BR>JSTOP<br></font>桃子<br>金山公司<br><img src="images/logo.gif" style="position:static;width:200px;height:100px;margin-top:100px;margin-bottom:100px;"></div>
+</div>
+</div>
+
+<div id="loadgame" style="width:640px;height:480px;left:0px;top:0px;background-image:url(images/load_bg.jpg);display:none">
+<span class="tab" style="top:131px;" id="tab1"><img src="images/loads.jpg" style="top:0px" onclick="show_tab(1);"></span>
+<span class="tab" style="top:149px;" id="tab2"><img src="images/loads.jpg" style="top:-18px" onclick="show_tab(2);"></span>
+<span class="tab" style="top:167px;" id="tab3"><img src="images/loads.jpg" style="top:-36px" onclick="show_tab(3);"></span>
+<span class="tab" style="top:185px;" id="tab4"><img src="images/loads.jpg" style="top:-54px" onclick="show_tab(4);"></span>
+<span class="tab" style="top:203px;" id="tab5"><img src="images/loads.jpg" style="top:-72px" onclick="show_tab(5);"></span>
+<span class="tab" style="top:221px;" id="tab6"><img src="images/loads.jpg" style="top:-90px" onclick="show_tab(6);"></span>
+<span class="tab" style="top:239px;" id="tab7"><img src="images/loads.jpg" style="top:-108px" onclick="show_tab(7);"></span>
+<span class="tab" style="top:257px;" id="tab8"><img src="images/loads.jpg" style="top:-126px" onclick="show_tab(8);"></span>
+<span class="tab" style="top:275px;" id="tab9"><img src="images/loads.jpg" style="top:-144px" onclick="show_tab(9);"></span>
+<span class="tab" style="top:293px;" id="tab10"><img src="images/loads.jpg" style="top:-162px" onclick="show_tab(10);"></span>
+<span style="width:260px;height:190px;left:270px;top:125px;overflow:hidden;">
+<span id="gameTime" style="width:260px;height:20px;left:0px;top:0px;overflow:hidden;"></span>
+<span id="gameImg" style="width:230px;height:160px;left:15px;top:25px;"></span>
+</span>
+<span style="width:132px;height:28px;left:74px;top:345px;overflow:hidden"><img src="images/load_button.jpg" style="position:absolute;left:0px;top:0px" onmousedown="this.style.pixelLeft-=132;" onmouseout="this.style.pixelLeft=0;" onclick="this.style.pixelLeft=0;LoadGame();"></span>
+<span id="savegame" style="width:132px;height:26px;left:257px;top:345px;overflow:hidden;"><img src="images/load_button.jpg" style="position:absolute;left:0px;top:-28px" onmousedown="this.style.pixelLeft-=132;" onmouseout="this.style.pixelLeft=0;" onclick="this.style.pixelLeft=0;SaveGame(tab);"></span>
+<span style="width:132px;height:28px;left:438px;top:345px;overflow:hidden"><img src="images/load_button.jpg" style="position:absolute;left:0px;top:-56px" onmousedown="this.style.pixelLeft-=132;" onmouseout="this.style.pixelLeft=0;" onclick="this.style.pixelLeft=0;GotoTitle();"></span>
+</div>
+
+<span id="showlogo" style="filter:alpha(opacity=0);-moz-opacity:0.0; 
+opacity:0.0;background-color:white;width:640px;height:480px;overflow:hidden;">
+<img src="images/logo.gif" onload="getPos(this);">
+</span>
+
+<span id="master" style="display:none;filter:alpha(opacity=0);-moz-opacity:0.0; 
+opacity:0.0;background-color:black;width:640px;height:480px;overflow:hidden;">
+<span id="IMGbuf" style="display:none;"></span>
+<img id="loadpic" src="images/loadbar.gif" style="left:188px;top:320px;width:0px;height:15px;">
+</span>
+
+<span style="display:none" id="game_eval"></span>
+
+<div id="bloodrect" style="display:none;filter:alpha(opacity=50);-moz-opacity:0.5; 
+opacity:0.5;width:640px;top:100px;height:16px;">
+<span id="allblood" style="background-color:black;"></span>
+<span id="newblood" style="background-color:red;"></span>
+<span style="width:100%;color:white;font-size:14px;text-align:center;line-height:16px;"></span>
+</div>
+
+<div id="DivBGS" style="display:none;"></div>
+<div id="DivBGM" style="display:none;"></div>
+<div id="DivSEME" style="display:none;"></div>
+
+</body>
+</html>
+<script src="code/main.js"></script>
+<script src="code/findpath.js"></script>
+<script src="code/loading.js"></script>
+<script src="code/scene.js"></script>
+<script src="code/event.js"></script>
+<script src="code/talk.js"></script>
+<script src="code/goods.js"></script>
+<script src="code/windowaudio.js"></script>
+<script>
+var GameTime=new GameTime();
+var GameScene=new GameScene();
+var GameEvent=new GameEvent();
+var WindowImageLoader=new WindowImageLoader();
+var GameText=new GameText();
+var GameGood=new GameGood();
+var audio=new WindowAudio();
+
+document.getElementById("game_eval").run='document.getElementById("title").style.display="";flag++;wait(1000);';
+
+function init(){
+	audio.init();
+	document.getElementById("game_eval").SoundRun='audio.PlayBGM("musics/qingyuan.mp3");';
+}
+
+function MouseDown(){
+	if(GameText.IsShowing!=0){
+		GameText.Hide();
+		return;
+	}
+}
+
+function MapDown(){
+	var event = window.event || arguments.callee.caller.arguments[0];
+	var srcElement = event.srcElement || event.target;
+	var str=srcElement.id;
+	var eventX = event.clientX || event.x || event.pageX;
+	var eventY = event.clientY || event.y || event.pageY;
+	if(str=="")
+	{
+		str=srcElement.parentElement.id;
+	}
+
+	if(GameTime.IsPause||GameRoles[0].IsAttacking||GameRoles[0].EventType==2||GameRoles[0].IsLocked)
+	{
+		return;
+	}
+	
+	GameRoles[0].IsStoping=true;
+	var x=eventX-document.getElementById("map").offsetLeft;
+	var y=eventY-document.getElementById("map").offsetTop;
+
+	if(str.slice(0,8)=="maskrole"&&str!="maskrole0")
+	{
+		GameRoles[0].EventRole=GameRoles[parseInt(str.replace("maskrole",""))];
+		if(GameRoles[0].EventRole.IsDead){GameRoles[0].EventRole=null;return;}
+		GameRoles[0].IsInEvent=1;
+		if(GameRoles[0].EventRole.Kind==2)
+		{
+			GameRoles[0].AttackTo([GameRoles[0].EventRole.X,GameRoles[0].EventRole.Y]);
+		}
+		else
+		{
+			GameRoles[0].EventRole.IsStoping=true;
+			GameRoles[0].EventRole.Path=null;
+			GameRoles[0].MoveTo([GameRoles[0].EventRole.X,GameRoles[0].EventRole.Y]);
+		}
+		return;
+	}
+	else if(str.slice(0,4)=="good")
+	{
+		GameRoles[0].IsInEvent=2;
+		GameRoles[0].EventRole=GameGood.Goods[parseInt(str.replace("good",""))];
+		GameRoles[0].MoveTo([GameRoles[0].EventRole.X,GameRoles[0].EventRole.Y]);
+		return;
+	}
+	else
+	{
+		GameRoles[0].IsInEvent=0;
+		GameRoles[0].EventRole=null;
+		GameRoles[0].MoveTo(GetPoint(x,y));
+	}
+}
+
+function show_tab(id)
+{
+	if(tab==id)
+		return;
+	if(tab!=0)
+		document.getElementById("tab"+tab).children[0].style.left=0;
+	document.getElementById("tab"+id).children[0].style.pixelLeft-=78;
+	tab=id;
+	LoadedData=new Array();
+	GetData(tab);
+}
+
+function SaveGame(id)
+{
+	SetData(id);
+}
+
+function LoadGame()
+{
+	if(LoadedData.length==0||LoadedData[0]=="")
+	{
+		return;
+	}
+	eval(LoadedData[1]);
+}
+
+function ToLoadFace()
+{
+	flag=0;
+	if(tab!=0)
+	{
+		show_tab(tab);
+	}
+	else
+	{
+		show_tab(1);
+	}
+
+	if(GameRoles[0]!=null)
+	{
+		document.getElementById("loadgame").style.display="";
+		document.getElementById("savegame").style.display="";
+	}
+	else
+	{
+		document.getElementById("game_eval").run='document.getElementById("title").style.display="none";document.getElementById("savegame").style.display="none";document.getElementById("loadgame").style.display="";flag++;wait(1);';
+		Fade();
+	}
+}
+
+function ToDesign()
+{
+	flag=0;
+	document.getElementById("game_eval").run='document.getElementById("title").style.display="none";document.getElementById("designMove").style.top="250px";document.getElementById("design").style.display="";flag++;wait(1);';
+	document.getElementById("game_eval").SoundRun='DeMove();';
+	Fade();
+}
+
+function DeMove()
+{
+	var t=document.getElementById("designMove").offsetHeight;
+	var b=document.getElementById("designer").offsetHeight;
+	var c=document.getElementById("designMove").offsetTop;
+	if(c>b-t)
+	{
+		document.getElementById("designMove").style.top=c-1;
+	}
+	else
+	{
+		return;
+	}
+	window.setTimeout("DeMove()",20);
+}
+
+function ToTitle()
+{
+	flag=0;
+	document.getElementById("game_eval").run='document.getElementById("title").style.display="";document.getElementById("design").style.display="none";flag++;wait(1);';
+	Fade();
+}
+
+function ToSystemMenu()
+{
+	GameTime.Pause();
+	document.getElementById("SystemMenu").style.display="";
+}
+
+function GotoTitle()
+{
+	flag=0;
+	state="new";
+	LoadedData=new Array();
+	if(GameRoles[0]!=null)
+	{
+		document.getElementById("loadgame").style.display="none";
+	}
+	else
+	{
+		document.getElementById("game_eval").run='document.getElementById("title").style.display="";document.getElementById("loadgame").style.display="none";flag++;wait(1);';
+		Fade();
+	}
+}
+
+function ClearAllSet(sceneId)
+{
+	console.log("clear all set...", sceneId);
+	document.getElementById("map").innerHTML="";
+	GameTime.Functions=new Array();
+	GameTime.PauseTime=GameTime.Time=0;
+	IsFirstIn=GameScene.ScenesData[GameScene.SceneID][1];
+	IsLoad=GameScene.ScenesData[GameScene.SceneID][2];
+	for(var i in GameRoles)
+	{
+		window.clearTimeout(GameRoles[i].Times);
+		GameRoles[i].Times=null;
+		if(state!="load"&&i==0)continue;
+		GameRoles[i]=null;
+	}
+
+	GameRoles.length=1;
+	GameEvent.Events=new Array();
+	GameText.Texts=new Array();
+	WindowImageLoader.Images=new Array();
+}
+
+var num=0;
+function Fade()
+{
+	var obj=document.getElementById("showlogo").style;
+	if(obj.display=="none")
+	{
+		obj.display="";
+	}
+	num = obj.opacity;
+
+	if(flag===0)
+	{
+		num=parseFloat(num)+2/100.0;
+		if(num>=1)
+		{
+			eval(document.getElementById("game_eval").run);
+			document.getElementById("game_eval").run="";
+			return;
+		}
+	}
+	else if(flag===1)
+	{
+		num=parseFloat(num)-2/100.0;
+		if(num<=0)
+		{
+			flag++;
+			document.getElementById("showlogo").innerHTML="";
+			if(document.getElementById("game_eval").SoundRun!="")
+			{
+				eval(document.getElementById("game_eval").SoundRun);
+				document.getElementById("game_eval").SoundRun="";
+			}
+			obj.display="none";
+			obj.backgroundColor="#000000";
+			return;
+		}
+	}
+	obj.opacity=num;
+	window.setTimeout("Fade()",1);
+}
+
+function wait(t)
+{
+	window.setTimeout("Fade()",t);
+}
+
+function GetPoint(x,y)
+{
+	return [Math.floor(x/gw),Math.floor(y/gh)];
+}
+
+function BuyGood()
+{
+	var event = window.event || arguments.callee.caller.arguments[0];
+	var srcElement = event.srcElement || event.target;
+	if(event.button==2)
+	{
+		var obj=srcElement.parentElement;
+		if(obj.id.slice(0,8)=="sellGood")
+		{
+			var id=parseInt(obj.sid);
+			var paymoney=GameGood.Goods[id].MONEY;
+			if(GameRoles[0].AllMoney<paymoney)
+			{
+				GameText.SystemInfo("您的金钱不够了");return;
+			}
+			GameRoles[0].AllMoney-=paymoney;
+			document.getElementById("allmoney").innerText=GameRoles[0].AllMoney;
+			GameRoles[0].GetGood(GameGood.Goods[id]);
+		}
+	}
+}
+
+function SellGood()
+{
+	var event = window.event || arguments.callee.caller.arguments[0];
+	var srcElement = event.srcElement || event.target;
+	if(event.button==2)
+	{
+		var obj=srcElement.parentElement;
+		if(obj.id.slice(0,6)=="myGood")
+		{
+			var id=parseInt(obj.id.replace("myGood",""));
+			var arr=GameRoles[0].Goods[id];
+			if(GameRoles[0].IsSelling)
+			{
+				if(arr.TYPE===-1)
+				{
+					GameText.SystemInfo("剧情物品不可出卖!");return;
+				}
+				var getmoney=arr.SELLMONEY;
+				GameRoles[0].AllMoney+=getmoney;
+				document.all("allmoney").innerText=GameRoles[0].AllMoney;
+				GameRoles[0].LoseGood(arr);
+			}
+			else
+			{
+				GameRoles[0].ReplaceGood(GameRoles[0].UseGoods[arr.TYPE],arr,"");
+			}
+		}
+	}
+}
+
+function ChangeGood()
+{
+	var event = window.event || arguments.callee.caller.arguments[0];
+	var srcElement = event.srcElement || event.target;
+	if(event.button==2)
+	{
+		var obj=srcElement.parentElement;
+		if(obj.id.slice(0,2)=="zb")
+		{
+			var id=parseInt(obj.id.replace("zb",""));
+			var arr=GameRoles[0].UseGoods[id];
+			GameRoles[0].ReplaceGood(arr,null,"shenshang");
+		}
+	}
+}
+
+function CreateXMLHTTP()
+{
+	var http;
+	if(window.ActiveXObject)
+	{
+		http=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	else if(window.XMLHttpRequest)
+	{
+		http=new XMLHttpRequest();
+	}
+	http.onreadystatechange = function()
+	{
+		if(http.readyState==4)
+		{
+			if(http.status==200)
+			{
+				var str=HttpRequest.responseText;
+				if(str!="")
+				{
+					str=unescape(str);
+				}
+				if(state=="load")
+				{
+					LoadedData=str.split("||");
+					if(str==""||LoadedData[0]==""||LoadedData[1]=="")
+					{
+						document.getElementById("gameTime").innerHTML="";
+						document.getElementById("gameImg").innerHTML="";
+					}
+					else
+					{
+						document.getElementById("gameTime").innerHTML=LoadedData[0];
+						document.getElementById("gameImg").innerHTML=LoadedData[1];
+					}
+				}
+				else if(state=="save")
+				{
+					document.getElementById("gameTime").innerHTML="";
+					document.getElementById("gameImg").innerHTML=str;
+				}
+			}
+			else
+			{
+				document.getElementById("gameImg").innerHTML="载入错误！";
+			}
+		}
+		else
+		{
+			document.getElementById("gameImg").innerHTML="loading......";
+		}
+	}
+	return http;
+}
+
+function GetData(id)
+{
+	state="load";
+	HttpRequest=CreateXMLHTTP();
+	HttpRequest.open("GET","DATA/GetData.asp?loadid="+id+"&rand="+Math.random(),true);
+	HttpRequest.send(null);
+}
+
+function SetData(id)
+{
+	state="save";
+	HttpRequest=CreateXMLHTTP();
+	var str="",date=new Date();
+	str+=date.getYear()+"年"+(date.getMonth()+1)+"月"+date.getDate()+"日 "+date.getHours()+"时"+date.getMinutes()+"分"+date.getSeconds()+"秒";
+	str+="||Event="+Event;
+
+	for(var i in GameScene.ScenesData)
+	{
+		if(GameScene.SceneID==i)
+		{
+			str+=";GameScene.SceneID="+i;
+			str+=";GameScene.ScenesData["+i+"]=[\""+GameScene.ScenesData[i][0]+"\",false,true]";
+		}
+		else
+		{
+			str+=";GameScene.ScenesData["+i+"]=[\""+GameScene.ScenesData[i][0]+"\",false,false]";
+		}
+	}
+
+	str+=";GameScene.GotoScene("+GameScene.SceneID+")||";
+
+	for(var i in GameRoles)
+	{
+		str+="with(GameRoles["+i+"]){X="+GameRoles[i].X+";Y="+GameRoles[i].Y+";D="+GameRoles[i].D+";Z="+GameRoles[i].Z+";InitRect();InitImg();SetImgLT();SetRectLT();SetD();SetZ();";
+		if(i==0)
+		{
+			for(var j in GameRoles[0].Goods)
+			{
+				str+="Goods["+j+"]=GameGood.Goods["+GameRoles[0].Goods[j].ID+"];";
+				str+="Goods["+j+"].NUM="+GameRoles[0].Goods[j].NUM+";";
+				str+="Goods["+j+"].SELLMONEY="+GameRoles[0].Goods[j].SELLMONEY+";";
+			}
+
+			for(var j in GameRoles[0].UseGoods)
+			{
+				if(GameRoles[0].UseGoods[j]!=null)
+					str+="UseGoods["+j+"]=GameGood.Goods["+GameRoles[0].UseGoods[j].ID+"];";
+			}
+
+			for(var j in GameRoles[0].ShuXing)
+			{
+				str+="ShuXing["+j+"]=["+GameRoles[0].ShuXing[j]+"];";
+			}
+			str+="AllMoney="+GameRoles[0].AllMoney+";GameRoles[0].SetHeight(document.getElementById(\"tiliIMG\"),GameRoles[0].ShuXing[6]);GameRoles[0].SetHeight(document.getElementById(\"manaIMG\"),GameRoles[0].ShuXing[8]);GameRoles[0].SetHeight(document.getElementById(\"lifeIMG\"),GameRoles[0].ShuXing[4]);SetPlayerScn();";
+		}
+		str+="}";
+	}
+	HttpRequest.open("GET","DATA/SetData.asp?saveid="+id+"&rand="+Math.random()+"&data="+str,true);
+	HttpRequest.send(null);
+}
+
+Fade();
+
+</script>
+<script src="scenes/gamegoods.js"></script>
+<script src="scenes/scene0.js"></script>
+<script src="scenes/scene1.js"></script>
+<script src="scenes/scene2.js"></script>
+<script src="scenes/scene3.js"></script>
+<script src="scenes/scene4.js"></script>
+<script src="scenes/scene5.js"></script>
+<script src="scenes/scene6.js"></script>

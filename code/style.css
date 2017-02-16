@@ -1,0 +1,76 @@
+img,span,div{position:absolute;}
+img{border:0px;}
+body{cursor:url(./cursor/mouse.cur);margin:0px;padding:0px;}
+#Ftop{z-index:11;position:absolute;width:200px;height:50px;background-color:#000000;filter:progid:DXImageTransform.Microsoft.Alpha(startX=50,startY=100,finishX=50,finishY=0,style=1,opacity=0,finishOpacity=100);}
+#Fbottom{z-index:10;position:absolute;background-color:#000000;top:250px;width:200px;height:50px;filter:progid:DXImageTransform.Microsoft.Alpha(startX=50,startY=0,finishX=50,finishY=100,style=1,opacity=0,finishOpacity=100);}
+
+.span{
+	margin-right:8px;margin-bottom:15px;
+	position:static;
+	width:50px;height:65px;
+	overflow:hidden;
+}
+.span2{
+	margin-right:8px;margin-bottom:15px;
+	position:static;
+	width:50px;height:65px;
+	overflow:hidden;
+}
+.zb{
+	height:65px;width:50px;overflow:hidden;
+}
+.sx{
+	height:12px;width:60px;overflow:hidden;
+}
+#goodsnum{
+	margin-top:2px;margin-left:2px;
+	font-size:12px;color:gray;
+}
+#allmoney{
+	font-size:12px;color:white;
+	left:160px;top:352px;width:80px;height:12px;
+	overflow:hidden;
+}
+#sxOLE{
+	left:95px;top:308px;
+	width:245px;height:88px;
+	color:white;font-size:12px;
+}
+#zbshow{
+	left:68px;top:70px;
+	width:236px;height:225px;overflow:hidden;
+}
+#TextOLE div{
+	left:40px;top:300px;width:430px;height:80px;
+	background-image:url("../images/talk.gif");
+	background-repeat:no-repeat;
+	overflow:hidden;padding:10px 80px 10px 80px;
+	font-size:14px;color:white;line-height:19px;
+}
+#TextOLE img{
+	left:70px;top:100px;
+	width:500px;height:200px;
+}
+#systemInfo{
+	text-align:center;
+	overflow:hidden;
+	background-image:url("../images/say.gif");
+	background-repeat:no-repeat;
+	width:280px;height:40px;
+	left:180px;top:350px;
+	font-size:14px;color:white;
+	width:300;
+	padding-top:12px;
+}
+.tab{
+	width:78px;height:18px;
+	left:121px;
+	overflow:hidden
+}
+.tab img{
+	left:0px;
+}
+#memo p{
+	text-indent:1em;margin-top:2px;margin-bottom:2px;
+}
+.p{margin-bottom:5px;margin-top:15px;color:#D7DE94;font-family:华文新魏;font-size:20px}
