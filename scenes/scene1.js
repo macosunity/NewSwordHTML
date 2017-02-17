@@ -44,7 +44,7 @@ function Scene1()
 		IsPlayer=true;
 		if(IsFirstIn&&Event<10){
 			EventType=2;
-			AddEvent(0,"GameText.ShowMsg(this.Name+\"：终于到了，这路还真长呢。\",5)");
+			AddEvent(0,"audio.StopBGM();GameText.ShowMsg(this.Name+\"：终于到了，这路还真长呢。\",5)");
 			AddEvent(1,"GameText.ShowMsg(this.Name+\"：小二，来点酒菜！......咦！\",5)");
 			AddEvent(2,"GameText.ShowMsg(\"强盗甲：快把钱通通交出来，否则要你好看！\")");
 			AddEvent(3,"GameText.ShowMsg(\"酒家老板：大爷饶了小的吧，小的做的薄本生意，就放过小的吧\")");
@@ -56,7 +56,7 @@ function Scene1()
 			AddEvent(9,"GameText.ShowMsg(\"强盗甲：你小子是哪里来的，竟然管大爷的闲事！\")");
 			AddEvent(10,"this.ChangeState(\"TOstand\",1)");
 			AddEvent(11,"GameText.ShowMsg(this.Name+\"：不管我哪里来的，让我遇上算你们倒霉吧！\",5)");
-			AddEvent(12,"GameText.Memo(\"消灭强盗！\")");
+			AddEvent(12,"audio.PlayBGM(\"musics/battle.mp3\");GameText.Memo(\"消灭强盗！\");");
 			AddEvent(13,"AllEnd()");
 		}
 		init();
@@ -112,6 +112,7 @@ function Scene1()
 	document.getElementById("game_eval").run='GameScene.SetNewScene(840,600);GameRoles[0].SetPlayerScn();';
 	if(IsLoad)
 		document.getElementById("game_eval").run+='document.getElementById("loadgame").style.display="none";document.getElementById("SystemMenu").style.display="none";';
+	document.getElementById("game_eval").SoundRun='audio.PlayBGM("musics/battle.mp3");';
 
 	GameTime.Init();
 
@@ -148,7 +149,7 @@ function DoEvent1()
 	document.getElementById("game_eval").DoEventGo='for(var i in GameRoles){if(GameRoles[i].IsDead)GameRoles[i].HideRole();}';
 	with(GameRoles[0]){
 		EventType=2;
-		AddEvent(0,"GameText.ShowMsg(this.Name+\"：一群败类。把我吃饭的兴致都弄没了。\",5)");
+		AddEvent(0,"audio.StopBGM();GameText.ShowMsg(this.Name+\"：一群败类。把我吃饭的兴致都弄没了。\",5)");
 		AddEvent(1,"AllEnd()");
 	}
 }

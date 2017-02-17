@@ -79,7 +79,7 @@ function Scene5()
 
 	GameTime.Init();
 
-	GameEvent.AddEvent("16,23;17,22;18,21","ClearAll();GameTime.Pause();GameRoles[0].X=0;GameRoles[0].Y=28;GameRoles[0].D=1;GameScene.GotoScene(6);");
+	GameEvent.AddEvent("16,23;17,22;18,21","ClearAll();GameTime.Pause();GameRoles[0].X=0;GameRoles[0].Y=28;GameRoles[0].D=1;GameScene.GotoScene(6);audio.StopBGM();");
 
 	WindowImageLoader.Add("images/player_asf.gif");
 

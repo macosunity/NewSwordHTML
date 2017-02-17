@@ -105,6 +105,8 @@ function Scene4()
 	if(IsLoad)
 		document.getElementById("game_eval").run+='document.getElementById("loadgame").style.display="none";document.getElementById("SystemMenu").style.display="none";';
 
+	document.getElementById("game_eval").SoundRun='audio.PlayBGM("musics/westmoutain.mp3");';
+	
 	GameTime.Init();
 
 	GameEvent.AddEvent("26,10;26,11","ClearAll();GameTime.Pause();GameRoles[0].X=26;GameRoles[0].Y=17;GameRoles[0].D=5;GameScene.GotoScene(2);");

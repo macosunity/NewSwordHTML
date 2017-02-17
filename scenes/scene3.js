@@ -37,7 +37,7 @@ function Scene3()
 		AttackRoles=[[24,0,-1952,0,172,120,-20,-58,30,"9,10,11"]];
 		if(IsFirstIn&&Event<20){
 			EventType=2;
-			AddEvent(0,"this.MoveTo([9,84])#this.IsStoping");
+			AddEvent(0,"audio.StopBGM();this.MoveTo([9,84])#this.IsStoping");
 			AddEvent(1,"this.D=7;this.SetD();");
 			AddEvent(2,"GameText.ShowMsg(this.Name+\"：你们是刚才遇到的强盗。\",5)");
 			AddEvent(3,"GameText.ShowMsg(\"强盗：不错！天堂有路你不走，地狱无门你偏来。\")");
@@ -46,7 +46,7 @@ function Scene3()
 			AddEvent(6,"GameRoles[0].ChangeState(\"TOstand\",1)");
 			AddEvent(7,"GameText.ShowMsg(this.Name+\"：五色教在江湖上为非作歹，兴风作浪。今日我便来惩奸除恶！\",5)");
 			AddEvent(8,"GameText.ShowMsg(\"强盗：那要看你有没有本事了。\")");
-			AddEvent(9,"GameText.Memo(\"没想到刚才逃跑的强盗竟然是五色教中人。消灭所有敌人。\")");
+			AddEvent(9,"audio.PlayBGM(\"musics/war.mp3\");GameText.Memo(\"没想到刚才逃跑的强盗竟然是五色教中人。消灭所有敌人。\")");
 			AddEvent(10,"AllEnd()");
 		}
 		if(Event>=40&&Event<50){
@@ -56,7 +56,7 @@ function Scene3()
 			AddEvent(3,"GameRoles[3].D=2;GameRoles[3].SetD();");
 			AddEvent(4,"GameText.ShowMsg(this.Name+\"：没想到你们武夷派果然与五色教同流合污！\",5)");
 			AddEvent(5,"GameText.ShowMsg(GameRoles[3].Name+\"：此言差矣！人各有志，我们道不同不相为谋！\")");
-			AddEvent(6,"GameText.ShowMsg(this.Name+\"：既然如此，你们纳命来吧！\",5)");
+			AddEvent(6,"GameText.ShowMsg(this.Name+\"：既然如此，你们纳命来吧！\",5);audio.PlayBGM(\"musics/war.mp3\");");
 			AddEvent(7,"AllEnd()");
 		}
 		init();
@@ -312,6 +312,8 @@ function Scene3()
 	if(IsLoad)
 		document.getElementById("game_eval").run+='document.getElementById("loadgame").style.display="none";document.getElementById("SystemMenu").style.display="none";';
 
+	document.getElementById("game_eval").SoundRun='audio.PlayBGM("musics/war.mp3");';
+
 	GameTime.Init();
 
 	GameEvent.AddEvent("53,9;53,10","if(Event>=50){GameText.ShowMsg(\"胡加杰：这个《新剑侠情缘》就DEMO到这里，后续章节敬请关注！\",10);}");
@@ -338,7 +340,7 @@ function DoEvent3(){
 	document.getElementById("game_eval").DoEventGo='for(var i in GameRoles){if(GameRoles[i].IsDead)GameRoles[i].HideRole();}';
 	with(GameRoles[0]){
 		EventType=2;
-		AddEvent(0,"GameText.ShowMsg(this.Name+\"：怎么看到他们往山上逃跑了？难道武林传言武夷派与五色教勾结是真？\",5)");
+		AddEvent(0,"audio.StopBGM();GameText.ShowMsg(this.Name+\"：怎么看到他们往山上逃跑了？难道武林传言武夷派与五色教勾结是真？\",5)");
 		AddEvent(1,"GameText.Memo(\"前往武夷派。\")");
 		AddEvent(2,"GameEvent.AddEvent(\"36,69;37,69;38,69;39,69;40,69\",\"CreateRole();\",true)");
 		AddEvent(3,"AllEnd()");
