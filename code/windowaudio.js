@@ -19,7 +19,6 @@ function WindowAudio()
 		this.BGM=BGM;
 		var DIV=document.getElementById("DivBGM");
 		DIV.innerText="";
-		// DIV.innerHTML='<audio volume='+this.Volume+' id=BGM src="'+this.BGM+'" controls="controls"></audio>';
 		DIV.innerHTML='<audio controls="controls" loop="true" autoplay="true"><source src="'+this.BGM+'" type="audio/mpeg"></audio>';
 	}
 	this.PlaySE=function(ID)

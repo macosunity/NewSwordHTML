@@ -4,13 +4,18 @@ function Scene1()
 
 	n_path="8,25;9,24;10,23;11,22;11,23;12,24;13,24;14,23;15,22;15,21;14,20;14,19;15,18;16,17;17,16;18,15;19,14;19,13;18,12;17,11;16,11;15,11;14,12;13,13;12,14;11,14;10,13;7,13;6,12;14,9;13,8;12,8;11,9;10,10;9,11;5,13;4,14;3,15;2,16;2,17;2,18;2,19;2,20;3,20;4,21;5,22;6,23;7,24;14,14;15,14;15,13;13,12;12,13;14,11;15,10;15,9;14,8;11,8;10,9;9,10;8,11;18,11;19,12;19,15;18,16;17,17;15,15;14,15;16,14;16,18;15,19;15,20;15,23;14,24;11,24;10,24;9,25;7,25;6,24;5,23;4,22;3,21;2,15;3,14;4,13;5,12;7,12;11,13;6,19;7,18;5,20;6,18;5,19;9,21;9,20;9,19;8,19;8,20;8,21;4,16;5,15;5,16;6,16;5,17;4,17;8,12;10,12;11,12;12,12;"
 
-	HTML='<img src="pictures/xjs/xjs6.gif" style="left:554px;top:257px;z-index:-1"><img src="pictures/xjs/xjs5.gif" style="left:156px;top:303px;z-index:-1"><img src="pictures/xjs/xjs1.gif" style="left:211px;top:310px;z-index:-1"><img src="pictures/xjs/xjs2.gif" style="left:396px;top:172px;z-index:-1"><img src="pictures/xjs/xjs3.gif" style="left:54px;top:160px;z-index:-1"><img src="pictures/xjs/xjs4.gif" style="left:303px;top:375px;z-index:-1">';
+	HTML='<div style="width:840px"><ul style="margin:0;padding:0;overflow:hidden;">';
+
 	for(var i=1;i<=40;i++){
-		HTML+='<img src="pictures/xjs/xjs_'+i+'.jpg" style="position:static;">';
+		HTML+='<li style="margin:0;padding:0;list-style-type:none;float:left;width:84px;height:150px;overflow:hidden;"><img src="pictures/xjs/xjs_'+i+'.jpg" style="display:block;width:84px;height:150px;border:0;margin:0;padding:0;"></li>';
 		if(i%10==0&&i!=40)
-			HTML+='<br>';
+		{
+			HTML+='</ul><ul style="margin:0;padding:0;overflow:hidden;">';
+		}
 		WindowImageLoader.Add("pictures/xjs/xjs_"+i+".jpg");
 	}
+
+	HTML+='</ul><img src="pictures/xjs/xjs6.gif" style="left:554px;top:257px;z-index:-1"><img src="pictures/xjs/xjs5.gif" style="left:156px;top:303px;z-index:-1"><img src="pictures/xjs/xjs1.gif" style="left:211px;top:310px;z-index:-1"><img src="pictures/xjs/xjs2.gif" style="left:396px;top:172px;z-index:-1"><img src="pictures/xjs/xjs3.gif" style="left:54px;top:160px;z-index:-1"><img src="pictures/xjs/xjs4.gif" style="left:303px;top:375px;z-index:-1"></div>';
 
 	ClearAllSet(1);
 

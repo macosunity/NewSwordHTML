@@ -2,13 +2,19 @@ function Scene5()
 {
 	n_path="18,22;17,23;16,24;15,24;14,25;13,26;12,27;11,28;10,28;9,27;8,26;7,25;7,23;11,18;12,18;13,17;15,14;16,13;17,13;16,14;18,12;19,13;20,14;21,15;22,16;21,16;22,17;21,18;20,19;19,20;19,21;19,22;20,20;21,19;22,18;18,23;17,24;15,25;14,26;13,27;12,28;9,28;8,27;7,26;6,21;5,20;4,19;5,19;3,19;3,18;3,17;4,16;4,15;5,14;6,12;5,13;7,13;8,14;9,15;10,15;11,16;12,17;12,16;11,15;9,14;10,14;9,13;8,12;7,12;8,13;4,14;3,16;5,12;6,22;5,21;6,23;7,24;7,22;8,22;21,14;20,13;19,12;12,7;13,8;14,8;13,7;11,8;11,9;10,9;8,11;11,7;14,9;14,10;15,11;15,10;16,12;16,11;17,12;13,16;10,24;11,24;11,23;10,23;9,25;11,25;10,25;12,25;9,9;8,10;8,9;12,14;12,15;11,14;"
 
-	HTML='<img src="pictures/rj/rj2.gif" style="left:381;top:442;z-index:25;"><img src="pictures/rj/rj3.gif" style="left:299;top:130;z-index:14;"><img src="pictures/rj/rj4.gif" style="left:163;top:374;z-index:24;"><img src="pictures/rj/rj9.gif" style="left:252;top:284;z-index:22;"><img src="pictures/rj/rj5.gif" style="left:406;top:195;z-index:18;"><img src="pictures/rj/rj6.gif" style="left:581;top:150;z-index:15;"><img src="pictures/rj/rj7.gif" style="left:669;top:126;z-index:12;">';
+	HTML='<div style="width:960px"><ul style="margin:0;padding:0;overflow:hidden;">';
+
 	for(var i=1;i<=40;i++){
-		HTML+='<img src="pictures/rj/rj_'+i+'.jpg" style="position:static;">';
+		HTML+='<li style="margin:0;padding:0;list-style-type:none;float:left;width:96px;height:160px;overflow:hidden;"><img src="pictures/rj/rj_'+i+'.jpg" style="display:block;width:96px;height:160px;border:0;margin:0;padding:0;"></li>';
 		if(i%10==0&&i!=40)
-			HTML+='<br>';
+		{
+			HTML+='</ul><ul style="margin:0;padding:0;overflow:hidden;">';
+		}
 		WindowImageLoader.Add("pictures/rj/rj_"+i+".jpg");
 	}
+
+	HTML+='</ul><img src="pictures/rj/rj2.gif" style="left:381;top:442;z-index:25;"><img src="pictures/rj/rj3.gif" style="left:299;top:130;z-index:14;"><img src="pictures/rj/rj4.gif" style="left:163;top:374;z-index:24;"><img src="pictures/rj/rj9.gif" style="left:252;top:284;z-index:22;"><img src="pictures/rj/rj5.gif" style="left:406;top:195;z-index:18;"><img src="pictures/rj/rj6.gif" style="left:581;top:150;z-index:15;"><img src="pictures/rj/rj7.gif" style="left:669;top:126;z-index:12;"></div>';
+
 
 	ClearAllSet();
 	for(var i=0;i<3;i++){
