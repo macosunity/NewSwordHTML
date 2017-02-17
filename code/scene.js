@@ -68,7 +68,6 @@ function GameScene()
 			if(!GameRoles[parseInt(arguments[i])].IsDead)
 				return false;
 		}
-		console.log("Enemies are all dead!");
 		return true;
 	}
 

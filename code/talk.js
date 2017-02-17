@@ -12,23 +12,18 @@ function GameText(){
 		this.IsShowing=1;//显示结束
 	}
 	this.ShowMsg=function(txt,face){
-		console.log("txt is ", txt);
-		console.log("face is ", face );
 		if(face==null)
 		{
 			face=0;
 		}
 		var obj=document.getElementById("TextOLE");
-		console.log(obj);
 		if(face!=0)
 		{
-			console.log("face != 0");
-			obj.children[0].children[0].src="faces/"+face+".gif";
+			obj.children[0].src="faces/"+face+".gif";
 			obj.children[0].style.display="block";
 		}
 		else
 		{
-			console.log("face == 0");
 			obj.children[0].style.display="none";
 		}
 		obj.children[1].innerHTML=txt;

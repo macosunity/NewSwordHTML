@@ -303,16 +303,21 @@ function Scene3()
 		GameTime.Add("if(!GameRoles[7].WantAttack&&GameRoles[0].EventType!=2&&Math.abs(GameRoles[7].X-GameRoles[0].X)<=5&&Math.abs(GameRoles[7].Y-GameRoles[0].Y)<=5){GameRoles[7].AttackTo([GameRoles[0].X,GameRoles[0].Y]);}",5,false,true);
 		GameTime.Add("if(!GameRoles[8].WantAttack&&GameRoles[0].EventType!=2&&Math.abs(GameRoles[8].X-GameRoles[0].X)<=5&&Math.abs(GameRoles[8].Y-GameRoles[0].Y)<=5){GameRoles[8].AttackTo([GameRoles[0].X,GameRoles[0].Y]);}",5,false,true);
 
-		GameTime.Add("if(GameScene.CheckDead(1,2,3,4,5,6,7,8)&&GameRoles[0].IsStoping&&Event<50){Event=50;GameText.ShowMsg(GameRoles[0].Name+\"：这群败类！险些被他们骗过，还是到里面看看吧！\",5);}",5,false,true);
+		GameTime.Add("if(GameScene.CheckDead(1,2,3,4,5,6,7,8)&&GameRoles[0].IsStoping&&Event<50){Event=50;audio.StopBGM();GameText.ShowMsg(GameRoles[0].Name+\"：这群败类！险些被他们骗过，还是到里面看看吧！\",5);}",5,false,true);
 
 		GameEvent.AddEvent("31,43;32,43;33,43","if(Event==40){GameRoles[0].EventType=2;Event=41;}",true);
 	}
 
 	document.getElementById("game_eval").run='GameScene.SetNewScene(2560,1920);GameRoles[0].SetPlayerScn();';
 	if(IsLoad)
+	{
 		document.getElementById("game_eval").run+='document.getElementById("loadgame").style.display="none";document.getElementById("SystemMenu").style.display="none";';
+	}
 
-	document.getElementById("game_eval").SoundRun='audio.PlayBGM("musics/war.mp3");';
+	if(IsFirstIn)
+	{
+		document.getElementById("game_eval").SoundRun='audio.PlayBGM("musics/war.mp3");';
+	}
 
 	GameTime.Init();
 

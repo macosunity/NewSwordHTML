@@ -76,13 +76,18 @@ function Scene6()
 	if(IsLoad)
 		document.getElementById("game_eval").run+='document.getElementById("loadgame").style.display="none";document.getElementById("SystemMenu").style.display="none";';
 
+	if(IsFirstIn)
+	{
+		document.getElementById("game_eval").SoundRun='audio.PlayBGM("musics/westmoutain.mp3");';
+	}
+
 	GameTime.Init();
 
 	GameEvent.AddEvent("18,7;18,8","ClearAll();GameTime.Pause();GameRoles[0].X=19;GameRoles[0].Y=34;GameRoles[0].D=5;GameScene.GotoScene(4);");
 
 	GameEvent.AddEvent("0,27;0,28","ClearAll();GameTime.Pause();GameRoles[0].X=17;GameRoles[0].Y=22;GameRoles[0].D=5;GameScene.GotoScene(5);");
 
-	GameEvent.AddEvent("21,37;22,36;23,35;24,34;25,33;26,32;27,31","if(Event>=40){ClearAll();GameTime.Pause();GameRoles[0].X=8;GameRoles[0].Y=14;GameRoles[0].D=2;GameScene.GotoScene(3);}else{GameText.ShowMsg(\"独孤剑：再四处找找吧，说不定会有收获呢。\",5);}");
+	GameEvent.AddEvent("21,37;22,36;23,35;24,34;25,33;26,32;27,31","if(Event>=40){audio.StopBGM();ClearAll();GameTime.Pause();GameRoles[0].X=8;GameRoles[0].Y=14;GameRoles[0].D=2;GameScene.GotoScene(3);}else{GameText.ShowMsg(\"独孤剑：再四处找找吧，说不定会有收获呢。\",5);}");
 
 	WindowImageLoader.Add("images/player_asf.gif");
 
